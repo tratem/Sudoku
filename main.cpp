@@ -6,9 +6,9 @@ using namespace std;
 
 bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos);
 
-bool check_row(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos);
+bool check_row(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c);
 
-bool check_column(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos);
+bool check_column(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c);
 
 void print_puzzle(int matrix[MATRIX_SIZE][MATRIX_SIZE]);    
 
@@ -26,15 +26,21 @@ void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
     srand(time(0));
     int pos;
-    for (int i = 1; i < MATRIX_SIZE; i++)
+
+    for (int blockRow = 0; blockRow < 3; blockRow++) 
     {
-        for (int j = 1; j < MATRIX_SIZE; j++)
+        for (int blockCol = 0; blockCol < 3; blockCol++) 
         {
-            pos = i * 10 + j;
-            matrix[i][j] = rand() % 9 + 1; 
-            if ((check_box(matrix, pos)) || (check_row(matrix, pos)) || (check_column(matrix, pos)))
+            for (int i = 1; i <= 3; i++) 
             {
-                j--;
+                for (int j = 1; j <= 3; j++) 
+                {
+                    matrix[blockRow * 3 + i][blockCol * 3 + j] = rand() % 9 + 1;
+                    if ((check_box(matrix, pos)) || (check_row(matrix, blockRow * 3 + i , blockCol * 3 + j)) || (check_column(matrix, blockRow * 3 + i , blockCol * 3 + j)))
+                    {
+                        j--;
+                    }
+                }
             }
         }
     }
@@ -65,10 +71,8 @@ void print_puzzle(int matrix[MATRIX_SIZE][MATRIX_SIZE])
     }
 }
 
-bool check_column(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
+bool check_column(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c)
 {
-    int r = pos / 10;
-    int c = pos % 10;
     for (int i = 1; i < r; i++)
     {
         if (matrix[r][c] == matrix [i][c])
@@ -79,10 +83,8 @@ bool check_column(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
     return false;
 }
 
-bool check_row(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
+bool check_row(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c)
 {
-    int r = pos / 10;
-    int c = pos % 10;
     for (int i = 1; i < c; i++)
     {
         if (matrix[r][c] == matrix [r][i])
@@ -100,9 +102,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     if (r <= 3 && c <= 3)
     {
-        for (int i = 1; i <= r; i++)
+        for (int i = 1; i <= 3; i++)
         {
-            for (int j = 1; j <= c; j++)
+            for (int j = 1; j <= 3; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -114,9 +116,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 3 && c <= 6)
     {
-        for (int i = 1; i <= r; i++)
+        for (int i = 1; i <= 3; i++)
         {
-            for (int j = 4; j <= c; j++)
+            for (int j = 4; j <= 6; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -128,9 +130,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 3 && c <= 9)
     {
-        for (int i = 1; i <= r; i++)
+        for (int i = 1; i <= 3; i++)
         {
-            for (int j = 7; j <= c; j++)
+            for (int j = 7; j <= 9; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -142,9 +144,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 6 && c <= 3)
     {
-        for (int i = 4; i <= r; i++)
+        for (int i = 4; i <= 6; i++)
         {
-            for (int j = 1; j <= c; j++)
+            for (int j = 1; j <= 3; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -156,9 +158,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 6 && c <= 6)
     {
-        for (int i = 4; i <= r; i++)
+        for (int i = 4; i <= 6; i++)
         {
-            for (int j = 4; j <= c; j++)
+            for (int j = 4; j <= 6; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -170,9 +172,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 6 && c <= 9)
     {
-        for (int i = 4; i <= r; i++)
+        for (int i = 4; i <= 6; i++)
         {
-            for (int j = 7; j <= c; j++)
+            for (int j = 7; j <= 9; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -184,9 +186,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 9 && c <= 3)
     {
-        for (int i = 7; i <= r; i++)
+        for (int i = 7; i <= 9; i++)
         {
-            for (int j = 1; j <= c; j++)
+            for (int j = 1; j <= 3; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -198,9 +200,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 9 && c <= 6)
     {
-        for (int i = 7; i <= r; i++)
+        for (int i = 7; i <= 9; i++)
         {
-            for (int j = 4; j <= c; j++)
+            for (int j = 4; j <= 6; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
@@ -212,9 +214,9 @@ bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
 
     else if (r <= 9 && c <= 9)
     {
-        for (int i = 7; i <= r; i++)
+        for (int i = 7; i <= 9; i++)
         {
-            for (int j = 7; j <= c; j++)
+            for (int j = 7; j <= 9; j++)
             {
                 if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
                 {
