@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos);
+bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c);
 
 bool check_row(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c);
 
@@ -25,7 +25,6 @@ int main()
 void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
     srand(time(0));
-    int pos;
 
     for (int blockRow = 0; blockRow < 3; blockRow++) 
     {
@@ -36,10 +35,11 @@ void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE])
                 for (int j = 1; j <= 3; j++) 
                 {
                     matrix[blockRow * 3 + i][blockCol * 3 + j] = rand() % 9 + 1;
-                    if ((check_box(matrix, pos)) || (check_row(matrix, blockRow * 3 + i , blockCol * 3 + j)) || (check_column(matrix, blockRow * 3 + i , blockCol * 3 + j)))
+                    if ((check_box(matrix, blockRow * 3 + i , blockCol * 3 + j)) || (check_row(matrix, blockRow * 3 + i , blockCol * 3 + j)) || (check_column(matrix, blockRow * 3 + i , blockCol * 3 + j)))
                     {
                         j--;
                     }
+                    print_puzzle(matrix);
                 }
             }
         }
@@ -95,11 +95,8 @@ bool check_row(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c)
     return false;
 }
 
-bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int pos)
+bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c)
 { 
-    int r = pos / 10;
-    int c = pos % 10;
-
     if (r <= 3 && c <= 3)
     {
         for (int i = 1; i <= 3; i++)
