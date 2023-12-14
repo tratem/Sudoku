@@ -26,21 +26,19 @@ void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE])
 {
     srand(time(0));
 
-    for (int blockRow = 0; blockRow < 3; blockRow++) 
+    for (int i = 1; i < MATRIX_SIZE; i++) 
     {
-        for (int blockCol = 0; blockCol < 3; blockCol++) 
+        for (int j = 1; j < MATRIX_SIZE; j++) 
         {
-            for (int i = 1; i <= 3; i++) 
+            matrix[i][j] = rand() % 9 + 1;
+            if ((check_box(matrix, i, j)) || (check_row(matrix, i, j)) || (check_column(matrix, i, j)))
             {
-                for (int j = 1; j <= 3; j++) 
+                if(j > 2)
                 {
-                    matrix[blockRow * 3 + i][blockCol * 3 + j] = rand() % 9 + 1;
-                    if ((check_box(matrix, blockRow * 3 + i , blockCol * 3 + j)) || (check_row(matrix, blockRow * 3 + i , blockCol * 3 + j)) || (check_column(matrix, blockRow * 3 + i , blockCol * 3 + j)))
-                    {
-                        j--;
-                    }
-                    print_puzzle(matrix);
+                    j -= 2;
                 }
+                else 
+                    j--;
             }
         }
     }
