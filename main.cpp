@@ -96,129 +96,17 @@ bool check_row(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c)
 }
 
 bool check_box(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c)
-{ 
-    if (r <= 3 && c <= 3)
-    {
-        for (int i = 1; i <= 3; i++)
-        {
-            for (int j = 1; j <= 3; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
+{
+    int startRow = (r - 1) / 3 * 3 + 1;
+    int startCol = (c - 1) / 3 * 3 + 1;
 
-    else if (r <= 3 && c <= 6)
+    for (int i = startRow; i <= startRow + 2; i++)
     {
-        for (int i = 1; i <= 3; i++)
+        for (int j = startCol; j <= startCol + 2; j++)
         {
-            for (int j = 4; j <= 6; j++)
+            if ((matrix[r][c] == matrix[i][j]) && (r != i) && (c != j))
             {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-
-    else if (r <= 3 && c <= 9)
-    {
-        for (int i = 1; i <= 3; i++)
-        {
-            for (int j = 7; j <= 9; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-
-    else if (r <= 6 && c <= 3)
-    {
-        for (int i = 4; i <= 6; i++)
-        {
-            for (int j = 1; j <= 3; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-
-    else if (r <= 6 && c <= 6)
-    {
-        for (int i = 4; i <= 6; i++)
-        {
-            for (int j = 4; j <= 6; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-
-    else if (r <= 6 && c <= 9)
-    {
-        for (int i = 4; i <= 6; i++)
-        {
-            for (int j = 7; j <= 9; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-
-    else if (r <= 9 && c <= 3)
-    {
-        for (int i = 7; i <= 9; i++)
-        {
-            for (int j = 1; j <= 3; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-
-    else if (r <= 9 && c <= 6)
-    {
-        for (int i = 7; i <= 9; i++)
-        {
-            for (int j = 4; j <= 6; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
-            }
-        }
-    }
-
-    else if (r <= 9 && c <= 9)
-    {
-        for (int i = 7; i <= 9; i++)
-        {
-            for (int j = 7; j <= 9; j++)
-            {
-                if ((matrix[r][c] == matrix [i][j]) && (r != i) && (c != j))
-                {
-                    return true;
-                }
+                return true;
             }
         }
     }
