@@ -3,7 +3,7 @@
         {
             "type": "cppbuild",
             "label": "BuildProgram",
-            "command": "C:\\Program Files\\mingw64\\bin\\g++.exe",
+            "command": "C:/msys64/ucrt64/bin/g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
