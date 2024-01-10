@@ -1,5 +1,7 @@
 #include <iostream>
 #include <ctime>
+#include <random>
+#include <chrono>
 #define MATRIX_SIZE 10
 
 using namespace std;
@@ -12,25 +14,30 @@ bool check_column(int matrix[MATRIX_SIZE][MATRIX_SIZE], int r, int c);
 
 void print_puzzle(int matrix[MATRIX_SIZE][MATRIX_SIZE]);    
 
-void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE]);
+void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE], chrono::seconds timeout);
 
 int main()
 {
     int matrix[MATRIX_SIZE][MATRIX_SIZE] = {0};
 
-    puzzle_generator(matrix);
+    puzzle_generator(matrix,  chrono::seconds(5));
     print_puzzle (matrix);
 }
 
-void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE])
+void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE], chrono::seconds timeout)
 {
-    srand(time(0));
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1,9);
+
+    auto start_time = std::chrono::steady_clock::now();
+    auto elapsed_time = std::chrono::steady_clock::now() - start_time;
 
     for (int i = 1; i < MATRIX_SIZE; i++) 
     {
         for (int j = 1; j < MATRIX_SIZE; j++) 
         {
-            matrix[i][j] = rand() % 9 + 1;
+            matrix[i][j] = dis(gen);
             if ((check_box(matrix, i, j)) || (check_row(matrix, i, j)) || (check_column(matrix, i, j)))
             {
                 if(j > 2)
@@ -41,6 +48,7 @@ void puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE])
                     j--;
             }
         }
+        elapsed_time = std::chrono::steady_clock::now() - start_time;
     }
 }
 
