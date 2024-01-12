@@ -1,5 +1,4 @@
 #include <iostream>
-#include <ctime>
 #include <random>
 #include <chrono>
 #define MATRIX_SIZE 10
@@ -16,12 +15,77 @@ void print_puzzle(int matrix[MATRIX_SIZE][MATRIX_SIZE]);
 
 bool puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE], chrono::seconds timeout);
 
+void level_generator(int user_matrix[MATRIX_SIZE][MATRIX_SIZE], char difficulty);
+
 int main()
 {
-    int matrix[MATRIX_SIZE][MATRIX_SIZE] = {0};
+    int matrix_solved[MATRIX_SIZE][MATRIX_SIZE] = {0}, user_matrix[MATRIX_SIZE][MATRIX_SIZE] = {0};
+    char level;
 
-    puzzle_generator(matrix,  chrono::seconds(5));
-    print_puzzle (matrix);
+    if (!puzzle_generator(matrix_solved,  chrono::seconds(10)))
+    {
+        return 0;
+    }
+    
+    //copy matrix
+    for (int i = 1; i < MATRIX_SIZE; i++) 
+    {
+        for (int j = 1; j < MATRIX_SIZE; j++) 
+        {
+            user_matrix[i][j] = matrix_solved[i][j];
+        }
+    }
+
+    cout << "The puzzle has been successfully generated. Please select level: [E]asy, [M]edium, or [H]ard: ";
+    cin >> level;
+    while ((toupper(level)!='E') && (toupper(level)!='M') && (toupper(level)!='H'))
+    {
+        cout << "Invalid input! Please choose [E]asy, [M]edium, or [H]ard: " << endl;
+        cin >> level;
+    }
+
+    level_generator(user_matrix, toupper(level));
+}
+
+void level_generator(int user_matrix[MATRIX_SIZE][MATRIX_SIZE], char level)
+{
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1, 9);
+    int a, b;
+    int hard_gen = 58 + dis(gen); //generatates the number of hidden elements for the hardes difficulty 
+    if (level == 'E')
+    {
+        for (int i = 0; i < 28; i++)
+        {
+            a = dis(gen);
+            b = dis(gen);
+            user_matrix[a][b] = 0;
+        }
+    }
+    else if (level == 'M')
+    {
+        for (int i = 0; i < 45; i++)
+        {
+            a = dis(gen);
+            b = dis(gen);
+            user_matrix[a][b] = 0;
+        }
+    }
+    else if (level == 'H')
+    {
+        for (int i = 0; i < hard_gen; i++)
+        {
+            a = dis(gen);
+            b = dis(gen);
+            while (user_matrix[a][b] == 0)
+            {
+                a = dis(gen);
+                b = dis(gen);
+            }
+            user_matrix[a][b] = 0;
+        }
+    }
 }
 
 bool puzzle_generator(int matrix[MATRIX_SIZE][MATRIX_SIZE], chrono::seconds timeout)
@@ -67,7 +131,11 @@ void print_puzzle(int matrix[MATRIX_SIZE][MATRIX_SIZE])
     {
         for (int j = 1; j < MATRIX_SIZE; j++)
         {
-            cout << matrix[i][j] << "  " ;
+            if (matrix[i][j] == 0)
+                cout << "_  ";
+            else 
+                cout << matrix[i][j] << "  " ;
+    
             if ((j % 3 == 0) && (j != 9))
             {
                 cout << "| ";
