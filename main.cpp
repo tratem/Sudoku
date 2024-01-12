@@ -1,7 +1,8 @@
 #include <iostream>
 #include <random>
 #include <chrono>
-#define MATRIX_SIZE 10
+
+const int MATRIX_SIZE = 10;
 
 using namespace std;
 
@@ -28,23 +29,22 @@ int main()
     }
     
     //copy matrix
-    for (int i = 1; i < MATRIX_SIZE; i++) 
-    {
-        for (int j = 1; j < MATRIX_SIZE; j++) 
-        {
-            user_matrix[i][j] = matrix_solved[i][j];
-        }
-    }
+    copy(&matrix_solved[0][0], &matrix_solved[0][0] + MATRIX_SIZE * MATRIX_SIZE, &user_matrix[0][0]);
+
 
     cout << "The puzzle has been successfully generated. Please select level: [E]asy, [M]edium, or [H]ard: ";
     cin >> level;
-    while ((toupper(level)!='E') && (toupper(level)!='M') && (toupper(level)!='H'))
+
+    level = toupper(level);
+
+    while ((level !='E') && (level !='M') && (level !='H'))
     {
         cout << "Invalid input! Please choose [E]asy, [M]edium, or [H]ard: " << endl;
         cin >> level;
+        level = toupper(level);
     }
 
-    level_generator(user_matrix, toupper(level));
+    level_generator(user_matrix, level);
 }
 
 void level_generator(int user_matrix[MATRIX_SIZE][MATRIX_SIZE], char level)
